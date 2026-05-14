@@ -112,6 +112,136 @@ function renderProblemExpression(problemIndex: number) {
           <Limit variable="n" to="∞" />n(√<span className="overline">n² + 8n</span> − n) · <Fraction numerator="1" denominator="n" />
         </>
       );
+    case 10:
+      return (
+        <>
+          <Limit variable="x" to="0" />
+          <Fraction numerator={<>sin(12x)</>} denominator={<>sin(4x)</>} />
+        </>
+      );
+    case 11:
+      return (
+        <>
+          <Limit variable="x" to="0" />
+          <Fraction numerator={<>e<sup>6x</sup> − 1</>} denominator="2x" />
+        </>
+      );
+    case 12:
+      return (
+        <>
+          <Limit variable="x" to="0" />
+          <Fraction numerator="ln(1 + 8x)" denominator="x" />
+        </>
+      );
+    case 13:
+      return (
+        <>
+          <Integral from="0" to="4" /> x dx
+        </>
+      );
+    case 14:
+      return (
+        <>
+          <Integral from="0" to="3" /> (2x + 1) dx
+        </>
+      );
+    case 15:
+      return (
+        <>
+          <Integral from="0" to="1" /> 20x³ dx
+        </>
+      );
+    case 16:
+      return (
+        <>
+          <Integral from="0" to="π/2" /> 6sin x dx
+        </>
+      );
+    case 17:
+      return (
+        <>
+          <Integral from="0" to="2" />
+          <Integral from="0" to="2" /> xy dy dx
+        </>
+      );
+    case 18:
+      return (
+        <>
+          <Limit variable="n" to="∞" />n(√<span className="overline">n² + 10n</span> − n) · <Fraction numerator="1" denominator="n" />
+        </>
+      );
+    case 19:
+      return (
+        <>
+          <Integral from="1" to="3" /> 3x² dx
+        </>
+      );
+    case 20:
+      return (
+        <>
+          <Integral from="0" to="1" />
+          <Integral from="0" to="x" /> 24xy dy dx
+        </>
+      );
+    case 21:
+      return (
+        <>
+          <Integral from="0" to="2" />
+          <Integral from="0" to="y" /> 6x dx dy
+        </>
+      );
+    case 22:
+      return (
+        <>
+          <Limit variable="x" to="0" />
+          <Fraction numerator="1 − cos(4x)" denominator="x²" />
+        </>
+      );
+    case 23:
+      return (
+        <>
+          <Limit variable="x" to="0" />
+          <Fraction numerator="sin(5x) − sin(3x)" denominator="x" />
+        </>
+      );
+    case 24:
+      return (
+        <>
+          <Integral from="0" to="1" /> (30x⁴ − 12x²) dx
+        </>
+      );
+    case 25:
+      return (
+        <>
+          <Integral from="0" to="2" /> (x + 1)³ dx
+        </>
+      );
+    case 26:
+      return (
+        <>
+          <Integral from="0" to="π/2" /> 8sin x cos x dx
+        </>
+      );
+    case 27:
+      return (
+        <>
+          <Limit variable="n" to="∞" />n(ln(n + 7) − ln n)
+        </>
+      );
+    case 28:
+      return (
+        <>
+          <Integral from="0" to="1" />
+          <Integral from="0" to="1" />
+          <Integral from="0" to="1" /> 64xyz dz dy dx
+        </>
+      );
+    case 29:
+      return (
+        <>
+          <Integral from="−2" to="2" /> (3x² + 2) dx
+        </>
+      );
     default:
       return "题目加载中";
   }

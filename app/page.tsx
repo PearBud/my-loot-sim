@@ -1,20 +1,25 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { BinaryHackerMinigame } from "@/components/BinaryHackerMinigame";
+import { LogicGridMinigame } from "@/components/LogicGridMinigame";
 import { MathMinigame } from "@/components/MathMinigame";
+import { OpticalBypassMinigame } from "@/components/OpticalBypassMinigame";
 import { SafeGrid } from "@/components/SafeGrid";
 import { WaveformMinigame } from "@/components/WaveformMinigame";
 import { generateLootBoard } from "@/lib/loot-sim/placement";
 import type { PlacedLoot } from "@/lib/loot-sim/types";
 
 type ViewState = "GRID_VIEW" | "DECRYPT_VIEW";
-type DecryptMode = "WAVEFORM" | "MATH";
+type DecryptMode = "WAVEFORM" | "MATH" | "LOGIC" | "BINARY" | "OPTICAL";
 
 const BACKGROUND_SOUND_SRC = encodeURI("/sounds/搜索背景音.mp3");
 const RED_LOOT_SOUND_SRC = encodeURI("/sounds/出大货音效.mp3");
 
+const DECRYPT_MODES: DecryptMode[] = ["WAVEFORM", "MATH", "LOGIC", "BINARY", "OPTICAL"];
+
 function pickDecryptMode(): DecryptMode {
-  return Math.random() < 0.5 ? "WAVEFORM" : "MATH";
+  return DECRYPT_MODES[Math.floor(Math.random() * DECRYPT_MODES.length)];
 }
 
 export default function Home() {
@@ -33,6 +38,13 @@ export default function Home() {
     void audio.play().catch(() => undefined);
   }, []);
 
+  const stopBackgroundSound = useCallback(() => {
+    const audio = backgroundAudioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+  }, []);
+
   const playRedLootSound = useCallback(() => {
     const audio = redLootAudioRef.current;
     if (!audio) return;
@@ -45,8 +57,8 @@ export default function Home() {
     setRevealedLootIds(new Set());
     setDecryptMode(pickDecryptMode());
     setViewState("DECRYPT_VIEW");
-    playBackgroundSound();
-  }, [playBackgroundSound]);
+    stopBackgroundSound();
+  }, [stopBackgroundSound]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -70,11 +82,13 @@ export default function Home() {
 
   const unlockSafe = useCallback(() => {
     setViewState("GRID_VIEW");
-  }, []);
+    playBackgroundSound();
+  }, [playBackgroundSound]);
 
   const cancelDecrypt = useCallback(() => {
     setViewState("GRID_VIEW");
-  }, []);
+    playBackgroundSound();
+  }, [playBackgroundSound]);
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center gap-6 overflow-hidden bg-black p-6 text-zinc-200">
@@ -122,6 +136,30 @@ export default function Home() {
       {viewState === "DECRYPT_VIEW" && board && decryptMode === "MATH" ? (
         <MathMinigame
           key={`math-${board.map((loot) => loot.instanceId).join("|")}`}
+          onSuccess={unlockSafe}
+          onCancel={cancelDecrypt}
+        />
+      ) : null}
+
+      {viewState === "DECRYPT_VIEW" && board && decryptMode === "LOGIC" ? (
+        <LogicGridMinigame
+          key={`logic-${board.map((loot) => loot.instanceId).join("|")}`}
+          onSuccess={unlockSafe}
+          onCancel={cancelDecrypt}
+        />
+      ) : null}
+
+      {viewState === "DECRYPT_VIEW" && board && decryptMode === "BINARY" ? (
+        <BinaryHackerMinigame
+          key={`binary-${board.map((loot) => loot.instanceId).join("|")}`}
+          onSuccess={unlockSafe}
+          onCancel={cancelDecrypt}
+        />
+      ) : null}
+
+      {viewState === "DECRYPT_VIEW" && board && decryptMode === "OPTICAL" ? (
+        <OpticalBypassMinigame
+          key={`optical-${board.map((loot) => loot.instanceId).join("|")}`}
           onSuccess={unlockSafe}
           onCancel={cancelDecrypt}
         />
